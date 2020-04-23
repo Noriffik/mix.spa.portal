@@ -15,6 +15,8 @@
     controller: ['$rootScope', '$scope', '$routeParams', 'ngAppSettings', 'RestAttributeSetDataPortalService', 'RestRelatedAttributeDataPortalService', 'RestAttributeFieldClientService',
         function ($rootScope, $scope, $routeParams, ngAppSettings, dataService, navService, fieldService) {
             var ctrl = this;
+            ctrl.simulateQuery = false;
+            ctrl.isDisabled = false;
             ctrl.request = angular.copy(ngAppSettings.request);
             ctrl.request.key = 'readData';
             ctrl.navs = [];
@@ -77,6 +79,30 @@
             ctrl.reload = async function () {
                 ctrl.newTitle = '';
                 ctrl.attrData = angular.copy(ctrl.defaultData);
+            };
+            ctrl.searchTextChange = function(text){
+
+            }
+            ctrl.selectedItemChange = function(text){
+
+            };
+            ctrl.querySearch = async function (query) {
+                return ctrl.data.items;
+                // var results = query ? ctrl.data.items.filter(ctrl.createFilterFor(query)) : ctrl.data.items,
+                //     deferred;
+                // if (ctrl.simulateQuery) {
+                //     deferred = $q.defer();
+                //     $timeout(function () { deferred.resolve(results); }, Math.random() * 1000, false);
+                //     return deferred.promise;
+                // } else {
+                //     return results;
+                // }
+            };
+            ctrl.createFilterFor = function(query) {
+                var lowercaseQuery = query.toLowerCase();
+                return function filterFn(item) {
+                    return (item.attributeData.obj.title.indexOf(lowercaseQuery) === 0);
+                };
             };
             ctrl.loadData = async function (pageIndex) {
                 ctrl.request.query = '';
@@ -158,11 +184,11 @@
                         });
                     }
                     else {
-                        var current = $rootScope.findObjectByKey(ctrl.data.items, 'id', nav.id);                        
+                        var current = $rootScope.findObjectByKey(ctrl.data.items, 'id', nav.id);
                         if (!current) {
                             current.disabled = true;
                         }
-                        var selected = $rootScope.findObjectByKey(ctrl.data.items, 'id', nav.id);                        
+                        var selected = $rootScope.findObjectByKey(ctrl.data.items, 'id', nav.id);
                         if (!selected) {
                             ctrl.selectedList.push(nav);
                         }
@@ -212,13 +238,13 @@
                     ctrl.attrData.obj.title = ctrl.newTitle;
                     ctrl.attrData.obj.slug = $rootScope.generateKeyword(ctrl.newTitle, '-');
                     ctrl.attrData.obj.type = ctrl.type;
-                    var nav = angular.copy(ctrl.defaultNav);                    
+                    var nav = angular.copy(ctrl.defaultNav);
                     nav.attributeData = ctrl.attrData;
                     navService.save(nav).then(resp => {
                         if (resp.isSucceed) {
                             ctrl.data.items.push(resp.data);
-                            ctrl.reload();                  
-                            resp.data.isActived = true;         
+                            ctrl.reload();
+                            resp.data.isActived = true;
                             ctrl.select(resp.data);
                             ctrl.isBusy = false;
                         } else {

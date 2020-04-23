@@ -26,6 +26,7 @@ var paths = {
     //webroot: "./dist/Mix.Cms.Web/wwwroot/", // Use for current repo dist
     webroot: "../mix.core/src/Mix.Cms.Web/wwwroot/", // Use for mix.core repo
     webapp: "./src/app/", //app
+    nodeModule: "./node_modules/", //app
     libs:   "./src/lib/",
     scriptLib: "./src/lib/", //app
     styleLib: "./src/lib/", //app
@@ -88,9 +89,16 @@ paths.sharedApp = {
 
 paths.framework = {
     src: [
+        `${paths.nodeModule}angular/angular.min.js`,
+        `${paths.nodeModule}angular-route/angular-route.min.js`,
+        `${paths.nodeModule}angular-sanitize/angular-sanitize.min.js`,
+        `${paths.nodeModule}angular-animate/angular-animate.min.js`,
+        `${paths.nodeModule}angular-aria/angular-aria.min.js`,
+        `${paths.nodeModule}angular-local-storage/dist/angular-local-storage.min.js`,
+        `${paths.nodeModule}/angular-material/angular-material.min.js`,
+        `${paths.nodeModule}jquery/dist/jquery.min.js`,
+        `${paths.nodeModule}jquery-ui/dist/jquery-ui.min.js`,
         paths.scriptLib + "angularjs/**/*.js",
-        paths.scriptLib + "jquery/jquery.min.js",
-        paths.scriptLib + "jquery/jquery-ui.min.js",
         paths.scriptLib + "jquery/jquery.qrcode.min.js",
         paths.scriptLib + "bootstrap/popper.min.js",
         paths.scriptLib + "bootstrap/bootstrap.min.js",
@@ -258,7 +266,7 @@ gulp.task("min:views", function (cb) {
 
 // JS
 paths.portal = {
-    src: [
+    src: [       
         paths.scriptLib + "portal/**/*.js",
         paths.scriptLib + "portal/**/*.*.js"
     ],
@@ -304,7 +312,7 @@ gulp.task("min:portalApp", function (cb) {
 });
 
 paths.appPortalRequired = {
-    src: [
+    src: [       
         paths.webapp + "app-portal/shared/**/*.js"
     ],
     dest: paths.webroot + "js/app-portal-required.min.js"
@@ -324,6 +332,7 @@ gulp.task("min:portalAppRequired", function (cb) {
 // CSS
 paths.portalCss = {
     src: [
+        `${paths.nodeModule}/angular-material/angular-material.min.css`,
         paths.libs + "portal/**/*.css",
         paths.libs + "portal/**/*.*.css"
     ],

@@ -10,7 +10,23 @@
     </h6>
     <div id="{{$ctrl.header}}-tab" class="card-body collapse" ng-init="$ctrl.loadData()">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12">{{$ctrl.selectedItem|json}}
+                <pre>{{ $ctrl.data.items|json}}</pre>
+                <!-- <md-autocomplete ng-disabled="$ctrl.isDisabled" md-no-cache="$ctrl.noCache"
+                    md-selected-item="$ctrl.selectedItem" md-search-text-change="$ctrl.searchTextChange(ctrl.searchText)"
+                    md-search-text="$ctrl.searchText" md-selected-item-change="$ctrl.selectedItemChange(item)"
+                    md-items="item in $ctrl.querySearch($ctrl.searchText)" md-item-text="item.attributeData.obj.title" 
+                    md-min-length="0"
+                    md-escape-options="clear" placeholder="Ex. Alaska" input-aria-labelledby="favoriteStateLabel">
+                    <md-item-template>
+                        <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.attributeData.obj.title}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No states matching "{{ctrl.searchText}}" were found.
+                        <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                    </md-not-found>
+                </md-autocomplete> -->
+
                 <input type="text" class="form-control mb-4"
                     placeholder="Enter new Title then press enter to create new one" ng-model="$ctrl.newTitle"
                     ng-enter="$ctrl.createData()" />
@@ -20,7 +36,7 @@
             <div class="col-12" ng-repeat="item in $ctrl.selectedList">
                 <checkbox-switch data="item" callback="$ctrl.select(data)"
                     description="item.attributeData.obj[$ctrl.fieldDisplay]">
-                </checkbox-switch>                
+                </checkbox-switch>
             </div>
         </div>
         <div class="row">
